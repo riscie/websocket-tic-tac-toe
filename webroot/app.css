@@ -1,0 +1,24 @@
+html {
+    font-family: "Roboto",sans-serif;
+    font-weight: normal;
+}
+
+.square{
+    width:100px;
+    height:100px;
+}
+
+.v{
+    border-left:1px solid #000;
+    border-right:1px solid #000;
+}
+
+.h{
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+}
+
+.board {
+    width: 300px;
+    margin: auto;
+}

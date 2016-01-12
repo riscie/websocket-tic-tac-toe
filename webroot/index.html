@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>websocket tic-tac-toe</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.css">
+    <link rel="stylesheet" type="text/css" href="/app.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper blue lighten-1">
+            <a href="#" class="brand-logo">websocket tic-tac-toe</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">Github</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="tictactoe">
+        <p>Players Connected: {{gameState.numPlayers}}</p>
+        <div id="board">
+            <table>
+                <tr id="row1">
+                    <td class="square"></td>
+                    <td class="square v"></td>
+                    <td class="square"></td>
+                </tr>
+                <tr id="row2">
+                    <td class="square h"></td>
+                    <td class="square v h"></td>
+                    <td class="square h"></td>
+                </tr>
+                <tr id="row3">
+                    <td class="square"></td>
+                    <td class="square v"></td>
+                    <td class="square"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.js" type= "text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.14/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <script src="/app.js" type= "text/javascript"></script>
+</body>
+</html>
