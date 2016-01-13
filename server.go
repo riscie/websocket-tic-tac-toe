@@ -5,12 +5,8 @@ import (
 	"net/http"
 )
 
-
-
 func main() {
 	h := newHub()
-
-	InitializeGameState()
 
 	router := http.NewServeMux()
 	router.Handle("/", http.FileServer(http.Dir("./webroot")))

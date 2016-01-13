@@ -10,7 +10,7 @@
 <body>
     <nav>
         <div class="nav-wrapper blue lighten-1">
-            <a href="#" class="brand-logo">websocket tic-tac-toe</a>
+            <a href="#" class="brand-logo">tic-tac-toe</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="#">Github</a></li>
             </ul>
@@ -18,25 +18,15 @@
     </nav>
 
     <div id="tictactoe">
-        <p>Players Connected: {{gameState.numPlayers}}</p>
+        <p>You are Player {{gameState.numPlayers}}</p>
+        <p>{{gameState.statusMessage}}</p>
         <div id="board">
-            <table>
-                <tr id="row1">
-                    <td class="square"></td>
-                    <td class="square v"></td>
-                    <td class="square"></td>
-                </tr>
-                <tr id="row2">
-                    <td class="square h"></td>
-                    <td class="square v h"></td>
-                    <td class="square h"></td>
-                </tr>
-                <tr id="row3">
-                    <td class="square"></td>
-                    <td class="square v"></td>
-                    <td class="square"></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="col s4" v-for="(index, field) in gameState.fields">
+                    <div v-if="field.set">{{field.symbol}}</div>
+                    <div v-if="!field.set"><a @click="chooseField(index)">choose me</a></div>
+                </div>
+           </div>
         </div>
     </div>
 
