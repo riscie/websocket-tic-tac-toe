@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
@@ -21,9 +20,11 @@ var connections []*connectionPair
 
 type connection struct {
 	// Channel which triggers the connection to update the gameState
-	send chan bool
-	// The hub.
-	h *connectionPair
+	broadcast chan bool
+	// The connectionPair. Holds up to 2 connections.
+	cp        *connectionPair
+	// playerNum represents the players Slot. Either 0 or 1
+	playerNum int
 }
 
 //wsHandler implements the Handler Interface
@@ -33,40 +34,34 @@ func (c *connection) reader(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	defer wg.Done()
 	for {
 		//Reading next move from connection here
-		_, chosenField, err := wsConn.ReadMessage()
+		_, clientMoveMessage, err := wsConn.ReadMessage()
 		if err != nil {
 			break
 		}
 
-		fn, _ := strconv.ParseUint(string(chosenField[:]), 10, 32) //Getting FieldValue From Player Action
-
-		c.h.gs.Fields[fn].Set = true
-		c.h.gs.Fields[fn].Symbol = "X"
-
-		c.h.broadcast <- true //telling hub to broadcast the gamestate
+		field, _ := strconv.ParseInt(string(clientMoveMessage[:]), 10, 32) //Getting FieldValue From Player Action
+		c.cp.gs.makeMove(c.playerNum, int(field))
+		c.cp.updateFromClient <- true //telling cp to broadcast the gamestate
 	}
 }
 
 func (c *connection) writer(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	defer wg.Done()
-	for range c.send {
+	for range c.broadcast {
 		sendGameStateToConnection(wsConn, c)
 	}
 }
 
-func getHubWithEmptySlot() *connectionPair {
+func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 	sizeBefore := len(connections)
-	for i, h := range connections {
-		fmt.Println("Hub", i, "has", len(h.connections), "connections")
+	for _, h := range connections {
 		if len(h.connections) <= 1 {
-			fmt.Println("returning Hub", i)
-			return h
+			return h, len(h.connections)
 		}
 	}
 	h := newConnectionPair()
 	connections = append(connections, h)
-	fmt.Println("Hubs: ", len(connections), "Before: ", sizeBefore)
-	return connections[sizeBefore]
+	return connections[sizeBefore], 0
 }
 
 func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -77,14 +72,15 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Adding Connection to hub
-	c := &connection{send: make(chan bool), h: getHubWithEmptySlot()}
-	c.h.addConnection(c)
-	defer c.h.removeConnection(c)
+	//Adding Connection to connectionpair
+	cp, pn := getConnectionPairWithEmptySlot()
+	c := &connection{broadcast: make(chan bool), cp: cp, playerNum: pn}
+	c.cp.addConnection(c)
+	defer c.cp.removeConnection(c)
 
-	c.h.gs.NumberOfPlayers++
-	if c.h.gs.NumberOfPlayers == 2 {
-		c.h.gs.StatusMessage = "starting game"
+	c.cp.gs.NumberOfPlayers++
+	if c.cp.gs.NumberOfPlayers == 2 {
+		c.cp.gs.StatusMessage = "starting game"
 	}
 
 	//Sending initial Gamestate to client
@@ -99,9 +95,9 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func sendGameStateToConnection(wsConn *websocket.Conn, c *connection) {
-	err := wsConn.WriteMessage(websocket.TextMessage, stateToJSON(c.h.gs))
+	err := wsConn.WriteMessage(websocket.TextMessage, stateToJSON(c.cp.gs))
 	//removing connection if updating gamestate fails
 	if err != nil {
-		c.h.removeConnection(c)
+		c.cp.removeConnection(c)
 	}
 }

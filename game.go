@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"fmt"
 )
 
 func newGameState() gameState {
@@ -20,6 +21,10 @@ func newGameState() gameState {
 			field{Set: true, Symbol: "O"},
 			field{Set: false, Symbol: ""},
 		},
+		playerSymbols: map[int]string{
+			0: "X",
+			1: "O",
+		},
 	}
 	return gs
 }
@@ -28,11 +33,18 @@ type gameState struct {
 	NumberOfPlayers int     `json:"numPlayers"`
 	StatusMessage   string  `json:"statusMessage"`
 	Fields          []field `json:"fields"`
+	playerSymbols	map[int]string
 }
 
 type field struct {
 	Set    bool   `json:"set"`
 	Symbol string `json:"symbol"`
+}
+
+func (gs *gameState) makeMove(playerNum int, field int) {
+	gs.Fields[field].Set = true
+	gs.Fields[field].Symbol = gs.playerSymbols[playerNum] //X atm
+	fmt.Println("Move: Player",playerNum,"Field",field)
 }
 
 func (gs *gameState) AddPlayer() {
