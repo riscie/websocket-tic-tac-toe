@@ -5,20 +5,23 @@ import (
 	"log"
 )
 
-var gs = gameState{
-	NumberOfPlayers: 0,
-	StatusMessage:   "waiting for second player...",
-	Fields: []field{
-		field{Set: false, Symbol: ""},
-		field{Set: false, Symbol: ""},
-		field{Set: false, Symbol: ""},
-		field{Set: false, Symbol: ""},
-		field{Set: false, Symbol: ""},
-		field{Set: true, Symbol: "X"},
-		field{Set: false, Symbol: ""},
-		field{Set: true, Symbol: "O"},
-		field{Set: false, Symbol: ""},
-	},
+func newGameState() gameState {
+	gs := gameState{
+		NumberOfPlayers: 0,
+		StatusMessage:   "waiting for second player...",
+		Fields: []field{
+			field{Set: false, Symbol: ""},
+			field{Set: false, Symbol: ""},
+			field{Set: false, Symbol: ""},
+			field{Set: false, Symbol: ""},
+			field{Set: false, Symbol: ""},
+			field{Set: true, Symbol: "X"},
+			field{Set: false, Symbol: ""},
+			field{Set: true, Symbol: "O"},
+			field{Set: false, Symbol: ""},
+		},
+	}
+	return gs
 }
 
 type gameState struct {
@@ -36,7 +39,7 @@ func (gs *gameState) AddPlayer() {
 	gs.NumberOfPlayers++
 }
 
-func stateToJSON() []byte {
+func stateToJSON(gs gameState) []byte {
 	json, err := json.Marshal(gs)
 	if err != nil {
 		log.Fatal("Error in marshalling json:", err)
