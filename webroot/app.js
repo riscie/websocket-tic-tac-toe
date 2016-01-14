@@ -2,8 +2,6 @@ var tictactoe = new Vue({
     el: '#tictactoe',
     data: {
         gameState: {
-            numPlayers: 0,
-            statusMessage: ""
         }
     },
     methods: {

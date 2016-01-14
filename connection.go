@@ -20,9 +20,9 @@ var connections []*connectionPair
 
 type connection struct {
 	// Channel which triggers the connection to update the gameState
-	broadcast chan bool
+	doBroadcast chan bool
 	// The connectionPair. Holds up to 2 connections.
-	cp        *connectionPair
+	cp *connectionPair
 	// playerNum represents the players Slot. Either 0 or 1
 	playerNum int
 }
@@ -41,13 +41,13 @@ func (c *connection) reader(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 
 		field, _ := strconv.ParseInt(string(clientMoveMessage[:]), 10, 32) //Getting FieldValue From Player Action
 		c.cp.gs.makeMove(c.playerNum, int(field))
-		c.cp.updateFromClient <- true //telling cp to broadcast the gamestate
+		c.cp.shouldBroadcast <- true //telling cp to broadcast the gamestate
 	}
 }
 
 func (c *connection) writer(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	defer wg.Done()
-	for range c.broadcast {
+	for range c.doBroadcast {
 		sendGameStateToConnection(wsConn, c)
 	}
 }
@@ -74,17 +74,13 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//Adding Connection to connectionpair
 	cp, pn := getConnectionPairWithEmptySlot()
-	c := &connection{broadcast: make(chan bool), cp: cp, playerNum: pn}
+	c := &connection{doBroadcast: make(chan bool), cp: cp, playerNum: pn}
 	c.cp.addConnection(c)
 	defer c.cp.removeConnection(c)
 
-	c.cp.gs.NumberOfPlayers++
-	if c.cp.gs.NumberOfPlayers == 2 {
-		c.cp.gs.StatusMessage = "starting game"
-	}
-
-	//Sending initial Gamestate to client
-	sendGameStateToConnection(wsConn, c)
+	//Sending initial Gamestate to all clients in cp
+	c.cp.gs.addPlayer()
+	c.cp.shouldBroadcast <- true //telling cp to broadcast the gamestate
 
 	var wg sync.WaitGroup
 	wg.Add(2)
