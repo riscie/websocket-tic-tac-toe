@@ -1,6 +1,8 @@
 # two-player tic-tac-toe 
 #### HTML5 websockets, golang backend with gorilla websockets, vuejs frontend, twitter bootstrap...
 
+![game sample](http://langhard.com/github/tic-tac-toe1.gif "game sample")
+
 
 ### get and run
 * `go get https://github.com/riscie/websocket-tic-tac-toe`\
