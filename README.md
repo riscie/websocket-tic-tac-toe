@@ -1,4 +1,4 @@
-# websocket tic-tac-toe 
+# websocket tic-tac-toe
 #### golang backend with gorilla websockets, vuejs frontend
 ![game sample](http://langhard.com/github/tic-tac-toe1.gif "game sample")
 
@@ -13,3 +13,6 @@
 ### gin (allows live-rebuilding on backend changes)
 * install gin: https://github.com/codegangsta/gin
 * start with gin:  `gin -a 8080 r .\server.go`
+
+
+# ...this project is 'work in progress'
