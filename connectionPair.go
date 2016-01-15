@@ -41,7 +41,6 @@ func newConnectionPair() *connectionPair {
 				// stop trying to send to this connection after trying for 1 second.
 				// if we have to stop, it means that a reader died so remove the connection also.
 				case <-time.After(1 * time.Second):
-					log.Printf("shutting down connection %s", c)
 					cp.removeConnection(c)
 				}
 			}

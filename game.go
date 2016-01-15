@@ -10,9 +10,9 @@ func newGameState() gameState {
 	gs := gameState{
 		StatusMessage: "Waiting to get paired",
 		Fields: []field{
-			field{},field{},field{}, // row1
-			field{},field{},field{}, // row2
-			field{},field{},field{}, // row3
+			field{}, field{}, field{}, // row1
+			field{}, field{}, field{}, // row2
+			field{}, field{}, field{}, // row3
 		},
 		PlayerSymbols: []string{0: "X", 1: "O"},
 		Started:       false,
@@ -30,9 +30,9 @@ type gameState struct {
 	PlayerSymbols []string `json:"playerSymbols"`
 	Started       bool     `json:"started"`
 	//These are not exported to JSON
-	numberOfPlayers int `json:"-"`
-	playersTurn     int `json:"-"`
-	numberOfMoves	int `json:"-"`
+	numberOfPlayers int
+	playersTurn     int
+	numberOfMoves   int
 }
 
 type field struct {
@@ -52,8 +52,8 @@ func (gs *gameState) addPlayer() {
 }
 
 func (gs *gameState) makeMove(playerNum int, field int) {
-	if gs.isPlayersTurn(playerNum){
-		if gs.isLegalMove(field){
+	if gs.isPlayersTurn(playerNum) {
+		if gs.isLegalMove(field) {
 			gs.Fields[field].Set = true
 			gs.Fields[field].Symbol = gs.PlayerSymbols[playerNum]
 			gs.switchPlayersTurn(playerNum)
@@ -63,18 +63,18 @@ func (gs *gameState) makeMove(playerNum int, field int) {
 	}
 }
 
-func (gs *gameState) checkForDraw(){
+func (gs *gameState) checkForDraw() {
 	//Todo: Implement in a gooooood way plz
-	if gs.numberOfMoves == 9{
+	if gs.numberOfMoves == 9 {
 		gs.StatusMessage = "Draw!"
 	}
 }
 
-func (gs *gameState) isLegalMove(field int) bool{
+func (gs *gameState) isLegalMove(field int) bool {
 	return !gs.Fields[field].Set
 }
 
-func (gs *gameState) isPlayersTurn(playerNum int) bool{
+func (gs *gameState) isPlayersTurn(playerNum int) bool {
 	return playerNum == gs.playersTurn
 }
 
