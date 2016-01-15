@@ -10,6 +10,6 @@
 * run the produced binary
 * connect to http://localhost:8080
 
-### gin (allows live-rebuilding the backend on changes)
+### gin (allows live-rebuilding on backend changes)
 * install gin: https://github.com/codegangsta/gin
-* start with gin:  `gin --appPort 8080 r .\server.go`
+* start with gin:  `gin -a 8080 r .\server.go`
