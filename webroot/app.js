@@ -1,4 +1,4 @@
-Vue.config.debug = true;
+Vue.config.debug = true; //TODO: Remove in production
 
 var tictactoe = new Vue({
     el: '#tictactoe',
@@ -26,14 +26,11 @@ var tictactoe = new Vue({
     }
 });
 
-
 var socket = new WebSocket("ws://localhost:8080/ws");
-//socket.send('I say hello to you, backend...');
 
 socket.onmessage = function(evt){
     var newData = JSON.parse(evt.data);
-    console.log(evt.data);
-    //vue.data = evt.data;
+    console.log(evt.data); //TODO: Remove in production
     tictactoe.gameState = newData;
 };
 

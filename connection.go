@@ -8,14 +8,14 @@ import (
 	"sync"
 )
 
-//upgrader is needed to upgrade the HTTP Connection to a websocket Connection
+// upgrader is needed to upgrade the HTTP Connection to a websocket Connection
 var upgrader = &websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	CheckOrigin:     func(r *http.Request) bool { return true }, //TODO: Remove in production. Needed for gin proxy
 }
 
-//connections stores all the hubs
+// connections stores all the hubs
 var connections []*connectionPair
 
 type connection struct {
@@ -27,9 +27,10 @@ type connection struct {
 	playerNum int
 }
 
-//wsHandler implements the Handler Interface
+// wsHandler implements the Handler Interface
 type wsHandler struct{}
 
+// reader reads the moves from the clients ws-connection
 func (c *connection) reader(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	defer wg.Done()
 	for {
@@ -45,6 +46,7 @@ func (c *connection) reader(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	}
 }
 
+// writer broadcasts the current gameState to the two players in a cp
 func (c *connection) writer(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	defer wg.Done()
 	for range c.doBroadcast {
@@ -52,6 +54,8 @@ func (c *connection) writer(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	}
 }
 
+// getConnectionPairWithEmptySlot looks trough all connectionPairs and finds one which has only 1 player
+// if there is none a new connectionPair is created and the player is added to that pair
 func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 	sizeBefore := len(connections)
 	for _, h := range connections {
@@ -64,6 +68,9 @@ func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 	return connections[sizeBefore], 0
 }
 
+// ServeHTTP is the routers HandleFunc for websocket connections
+// connections are upgraded to websocket connections and the player is added
+// to a connection pair
 func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//Upgrading HTTP Connection to websocket connection
 	wsConn, err := upgrader.Upgrade(w, r, nil)
@@ -82,6 +89,8 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c.cp.gs.addPlayer()
 	c.cp.shouldBroadcast <- true //telling cp to broadcast the gamestate
 
+	//creating the writer and reader goroutines
+	//the websocket connection is open as long as these goroutines are running
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go c.writer(&wg, wsConn)
@@ -90,8 +99,10 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	wsConn.Close()
 }
 
+// sendGameStateToConnection broadcasts the current gameState as JSON to all players
+// within a cp
 func sendGameStateToConnection(wsConn *websocket.Conn, c *connection) {
-	err := wsConn.WriteMessage(websocket.TextMessage, stateToJSON(c.cp.gs))
+	err := wsConn.WriteMessage(websocket.TextMessage, c.cp.gs.gameStateToJSON())
 	//removing connection if updating gamestate fails
 	if err != nil {
 		c.cp.removeConnection(c)

@@ -5,22 +5,20 @@ import (
 	"time"
 )
 
+// connectionPair handles the update of the gameState between two players
 type connectionPair struct {
 	// the mutex to protect connections
 	connectionsMx sync.RWMutex
-
 	// Registered connections.
 	connections map[*connection]struct{}
-
 	// Inbound messages from the connections.
 	shouldBroadcast chan bool
-
-	logMx sync.RWMutex
-	log   [][]byte
-
-	gs gameState
+	logMx           sync.RWMutex
+	log             [][]byte
+	gs              gameState
 }
 
+// newConnectionPair is the constructor for the connectionPair struct
 func newConnectionPair() *connectionPair {
 	cp := &connectionPair{
 		connectionsMx:   sync.RWMutex{},
@@ -49,12 +47,15 @@ func newConnectionPair() *connectionPair {
 	return cp
 }
 
+// addConecction adds a players connection to the cp
 func (h *connectionPair) addConnection(conn *connection) {
 	h.connectionsMx.Lock()
 	defer h.connectionsMx.Unlock()
 	h.connections[conn] = struct{}{}
 }
 
+// addConecction removes a players connection from the cp
+// TODO: Needs fixing. Connections are note removed atm.
 func (h *connectionPair) removeConnection(conn *connection) {
 	h.connectionsMx.Lock()
 	defer h.connectionsMx.Unlock()
