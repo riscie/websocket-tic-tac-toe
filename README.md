@@ -1,5 +1,5 @@
 # websocket tic-tac-toe
-#### golang backend with gorilla websockets, vuejs frontend
+#### multiplayer tic-tac-toe using golang with gorilla websockets as backend and vuejs as frontend
 ![game sample](http://langhard.com/github/tic-tac-toe1.gif "game sample")
 
 *(yeah, playing myself in this gif...)*
