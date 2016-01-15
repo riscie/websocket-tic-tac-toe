@@ -9,6 +9,7 @@ import (
 const waitPaired = "Waiting to get paired"
 const gameBegins = "Game begins!"
 const draw = "Draw!"
+const resetWaitPaired = "Opponent disconnected - Waiting to get paired again"
 
 // gameState is the struct which represents the gameState between two players
 type gameState struct {
@@ -98,6 +99,14 @@ func (gs *gameState) restartGame() {
 	gs.Over = false
 	gs.numberOfMoves = 0
 
+}
+
+// resetGame is needed, when one player drops out. It sets the gameState to a state so that
+// the player who is left can wait for a new opponent.
+func (gs *gameState) resetGame() {
+	gs.restartGame()
+	gs.Started = false
+	gs.StatusMessage = resetWaitPaired
 }
 
 // checkForDraw checks for draws

@@ -63,4 +63,5 @@ func (h *connectionPair) removeConnection(conn *connection) {
 		delete(h.connections, conn)
 		close(conn.doBroadcast)
 	}
+	h.gs.resetGame()
 }

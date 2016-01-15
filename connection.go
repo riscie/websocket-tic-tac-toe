@@ -85,9 +85,19 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	c.cp.addConnection(c)
 	defer c.cp.removeConnection(c)
 
-	//Sending initial gameState to all clients in connectionPair
+	//If the connectionPair existed before but one player was disconnected
+	//we can now reinitialize the gameState after the remaining player has
+	//been paired again
+	if c.cp.gs.StatusMessage == resetWaitPaired {
+		c.cp.gs = newGameState()
+		//there is already one player connected when we re-pair
+		c.cp.gs.numberOfPlayers = 1
+	}
+
+	//inform the gameState about the new player
 	c.cp.gs.addPlayer()
-	c.cp.shouldBroadcast <- true //telling connectionPair to broadcast the gameState
+	//telling connectionPair to broadcast the gameState
+	c.cp.shouldBroadcast <- true
 
 	//creating the writer and reader goroutines
 	//the websocket connection is open as long as these goroutines are running
