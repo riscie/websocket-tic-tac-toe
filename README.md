@@ -1,8 +1,6 @@
 # websocket tic-tac-toe
 #### multiplayer tic-tac-toe using golang with gorilla websockets as backend and vuejs as frontend
-![game sample](http://langhard.com/github/tic-tac-toe1.gif "game sample")
-
-*(yeah, playing myself in this gif...)*
+![game sample](http://langhard.com/github/tic-tac-toe2.gif "game sample")
 
 ### get and run
 * `go get https://github.com/riscie/websocket-tic-tac-toe`
