@@ -12,8 +12,6 @@
 * install gin: https://github.com/codegangsta/gin
 * start with gin:  `gin -a 8080 r .\server.go`
 
-
-### ...this project is 'work in progress'
 ### Todos:
 * some methods need refactoring
 * could implement cookies to identify clients
