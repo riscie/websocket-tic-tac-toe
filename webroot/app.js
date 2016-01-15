@@ -1,5 +1,20 @@
+// creating the websocket connection
+var socket = new WebSocket("ws://localhost:8080/ws");
+
+// when an update is received via ws connection, we update the model
+socket.onmessage = function(evt){
+    var newData = JSON.parse(evt.data);
+    console.log(evt.data); //TODO: Remove in production
+    tictactoe.gameState = newData;
+};
+
+
+// vuejs debug mode
 Vue.config.debug = true; //TODO: Remove in production
 
+// creating the vue instance here
+// trying to have all my logic in the backend, only updating the view
+// on model changes and passing moves back to the backend
 var tictactoe = new Vue({
     el: '#tictactoe',
     data: {
@@ -25,12 +40,3 @@ var tictactoe = new Vue({
         },
     }
 });
-
-var socket = new WebSocket("ws://localhost:8080/ws");
-
-socket.onmessage = function(evt){
-    var newData = JSON.parse(evt.data);
-    console.log(evt.data); //TODO: Remove in production
-    tictactoe.gameState = newData;
-};
-
