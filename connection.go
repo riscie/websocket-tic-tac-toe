@@ -42,11 +42,11 @@ func (c *connection) reader(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 
 		field, _ := strconv.ParseInt(string(clientMoveMessage[:]), 10, 32) //Getting FieldValue From Player Action
 		c.cp.gs.makeMove(c.playerNum, int(field))
-		c.cp.shouldBroadcast <- true //telling cp to broadcast the gamestate
+		c.cp.shouldBroadcast <- true //telling connectionPair to broadcast the gameState
 	}
 }
 
-// writer broadcasts the current gameState to the two players in a cp
+// writer broadcasts the current gameState to the two players in a connectionPair
 func (c *connection) writer(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 	defer wg.Done()
 	for range c.doBroadcast {
@@ -79,15 +79,15 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//Adding Connection to connectionpair
+	//Adding Connection to connectionPair
 	cp, pn := getConnectionPairWithEmptySlot()
 	c := &connection{doBroadcast: make(chan bool), cp: cp, playerNum: pn}
 	c.cp.addConnection(c)
 	defer c.cp.removeConnection(c)
 
-	//Sending initial Gamestate to all clients in cp
+	//Sending initial gameState to all clients in connectionPair
 	c.cp.gs.addPlayer()
-	c.cp.shouldBroadcast <- true //telling cp to broadcast the gamestate
+	c.cp.shouldBroadcast <- true //telling connectionPair to broadcast the gameState
 
 	//creating the writer and reader goroutines
 	//the websocket connection is open as long as these goroutines are running
@@ -100,10 +100,10 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 // sendGameStateToConnection broadcasts the current gameState as JSON to all players
-// within a cp
+// within a connectionPair
 func sendGameStateToConnection(wsConn *websocket.Conn, c *connection) {
 	err := wsConn.WriteMessage(websocket.TextMessage, c.cp.gs.gameStateToJSON())
-	//removing connection if updating gamestate fails
+	//removing connection if updating gameState fails
 	if err != nil {
 		c.cp.removeConnection(c)
 	}

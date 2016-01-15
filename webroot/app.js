@@ -1,5 +1,5 @@
 // creating the websocket connection
-var socket = new WebSocket("ws://nb2737:8080/ws");
+var socket = new WebSocket("ws://localhost:8080/ws");
 
 // when an update is received via ws connection, we update the model
 socket.onmessage = function(evt){

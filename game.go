@@ -5,12 +5,12 @@ import (
 	"log"
 )
 
-// constants representing different game status messages
+// these constants represent different game status messages
 const waitPaired = "Waiting to get paired"
 const gameBegins = "Game begins!"
 const draw = "Draw!"
 
-// gameState is the struct which represents the gamestate between two players
+// gameState is the struct which represents the gameState between two players
 type gameState struct {
 	//renaming json values here to confirm the standard (lowercase var names)
 	StatusMessage string   `json:"statusMessage"`
@@ -24,13 +24,13 @@ type gameState struct {
 	numberOfMoves   int
 }
 
-// field represents one of the nine tic-tac-toe fileds
+// field represents one of the nine tic-tac-toe fields
 type field struct {
 	Set    bool   `json:"set"`
 	Symbol string `json:"symbol"`
 }
 
-// newGameState is the constructor for the gameState struct and creates the initial gameState Struct (emtpy board)
+// newGameState is the constructor for the gameState struct and creates the initial gameState Struct (empty board)
 func newGameState() gameState {
 	gs := gameState{
 		StatusMessage: waitPaired,
@@ -52,7 +52,7 @@ func emptyFields() []field {
 	}
 }
 
-// addPlayer informs the gamestate about the new player and alters the statusMessage
+// addPlayer informs the gameState about the new player and alters the statusMessage
 func (gs *gameState) addPlayer() {
 	gs.numberOfPlayers++
 	switch gs.numberOfPlayers {
@@ -81,6 +81,7 @@ func (gs *gameState) makeMove(playerNum int, moveNum int) {
 	}
 }
 
+// special move processes moves which are not board moves like restarting the game
 func (gs *gameState) specialMove(moveNum int) {
 	switch moveNum {
 	//restart game
@@ -89,6 +90,8 @@ func (gs *gameState) specialMove(moveNum int) {
 	}
 }
 
+// restartGame sets the gameState to a state so that a new game between the same
+// players can begin
 func (gs *gameState) restartGame() {
 	gs.StatusMessage = gameBegins
 	gs.Fields = emptyFields()

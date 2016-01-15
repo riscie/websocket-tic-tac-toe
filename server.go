@@ -7,8 +7,7 @@ import (
 )
 
 func main() {
-	//ip := "192.168.0.20"
-	host := "192.168.0.20"
+	host := "localhost"
 	port := "8080"
 	conn := fmt.Sprint(host, ":", port)
 	router := http.NewServeMux()

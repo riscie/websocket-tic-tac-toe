@@ -47,14 +47,14 @@ func newConnectionPair() *connectionPair {
 	return cp
 }
 
-// addConecction adds a players connection to the cp
+// addConnection adds a players connection to the connectionPair
 func (h *connectionPair) addConnection(conn *connection) {
 	h.connectionsMx.Lock()
 	defer h.connectionsMx.Unlock()
 	h.connections[conn] = struct{}{}
 }
 
-// addConecction removes a players connection from the cp
+// removeConnection removes a players connection from the connectionPair
 // TODO: Needs fixing. Connections are note removed atm.
 func (h *connectionPair) removeConnection(conn *connection) {
 	h.connectionsMx.Lock()
