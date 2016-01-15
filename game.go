@@ -9,7 +9,7 @@ import (
 const waitPaired = "Waiting to get paired"
 const gameBegins = "Game begins!"
 const draw = "Draw!"
-const resetWaitPaired = "Opponent disconnected - Waiting to get paired again"
+const resetWaitPaired = "Opponent has been disconnected :( Waiting to get paired again"
 
 // gameState is the struct which represents the gameState between two players
 type gameState struct {

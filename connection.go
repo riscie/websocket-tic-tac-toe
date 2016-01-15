@@ -42,7 +42,7 @@ func (c *connection) reader(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 
 		field, _ := strconv.ParseInt(string(clientMoveMessage[:]), 10, 32) //Getting FieldValue From Player Action
 		c.cp.gs.makeMove(c.playerNum, int(field))
-		c.cp.shouldBroadcast <- true //telling connectionPair to broadcast the gameState
+		c.cp.receiveMove <- true //telling connectionPair to broadcast the gameState
 	}
 }
 
@@ -97,7 +97,7 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//inform the gameState about the new player
 	c.cp.gs.addPlayer()
 	//telling connectionPair to broadcast the gameState
-	c.cp.shouldBroadcast <- true
+	c.cp.receiveMove <- true
 
 	//creating the writer and reader goroutines
 	//the websocket connection is open as long as these goroutines are running
