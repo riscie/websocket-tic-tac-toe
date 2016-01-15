@@ -15,5 +15,6 @@
 
 ### ...this project is 'work in progress'
 ### Todos:
-* finish implementing the game logic
+* some methods need refactoring
+* could implement cookies to identify clients
 * writing tests
