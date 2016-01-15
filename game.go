@@ -10,6 +10,7 @@ const waitPaired = "Waiting to get paired"
 const gameBegins = "Game begins!"
 const draw = "Draw!"
 const resetWaitPaired = "Opponent has been disconnected :( Waiting to get paired again"
+const winner = " wins! Congratulations!"
 
 // gameState is the struct which represents the gameState between two players
 type gameState struct {
@@ -74,6 +75,9 @@ func (gs *gameState) makeMove(playerNum int, moveNum int) {
 				gs.Fields[moveNum].Symbol = gs.PlayerSymbols[playerNum]
 				gs.switchPlayersTurn(playerNum)
 				gs.numberOfMoves++
+				if won, symbol := gs.checkForWin(); won {
+					gs.setWinner(symbol)
+				}
 				gs.checkForDraw()
 			}
 		}
@@ -107,6 +111,55 @@ func (gs *gameState) resetGame() {
 	gs.restartGame()
 	gs.Started = false
 	gs.StatusMessage = resetWaitPaired
+}
+
+// checkForWin checks if a player has three in a row
+func (gs *gameState) checkForWin() (bool, string) {
+	// TODO: There are way beter, more dynamic implementations for this. We could limit the search space
+	// TODO: by looking at the field where the last move was made eg.
+	//rows
+	//check row1
+	if gs.Fields[0].Symbol == gs.Fields[1].Symbol && gs.Fields[1].Symbol == gs.Fields[2].Symbol && gs.Fields[2].Symbol != "" {
+		return true, gs.Fields[0].Symbol
+	}
+	//check row2
+	if gs.Fields[3].Symbol == gs.Fields[4].Symbol && gs.Fields[4].Symbol == gs.Fields[5].Symbol && gs.Fields[5].Symbol != "" {
+		return true, gs.Fields[3].Symbol
+	}
+	//check row2
+	if gs.Fields[6].Symbol == gs.Fields[7].Symbol && gs.Fields[7].Symbol == gs.Fields[8].Symbol && gs.Fields[8].Symbol != "" {
+		return true, gs.Fields[7].Symbol
+	}
+
+	//columns
+	//column 1
+	if gs.Fields[0].Symbol == gs.Fields[3].Symbol && gs.Fields[3].Symbol == gs.Fields[6].Symbol && gs.Fields[6].Symbol != "" {
+		return true, gs.Fields[0].Symbol
+	}
+	//column 2
+	if gs.Fields[1].Symbol == gs.Fields[4].Symbol && gs.Fields[4].Symbol == gs.Fields[7].Symbol && gs.Fields[7].Symbol != "" {
+		return true, gs.Fields[1].Symbol
+	}
+	//column 3
+	if gs.Fields[2].Symbol == gs.Fields[5].Symbol && gs.Fields[5].Symbol == gs.Fields[8].Symbol && gs.Fields[8].Symbol != "" {
+		return true, gs.Fields[2].Symbol
+	}
+
+	//diagonals
+	//diagonal1
+	if gs.Fields[0].Symbol == gs.Fields[4].Symbol && gs.Fields[4].Symbol == gs.Fields[8].Symbol && gs.Fields[8].Symbol != "" {
+		return true, gs.Fields[0].Symbol
+	}
+	//diagonal2
+	if gs.Fields[2].Symbol == gs.Fields[4].Symbol && gs.Fields[4].Symbol == gs.Fields[6].Symbol && gs.Fields[6].Symbol != "" {
+		return true, gs.Fields[2].Symbol
+	}
+	return false, ""
+}
+
+func (gs *gameState) setWinner(symbol string) {
+	gs.StatusMessage = symbol + winner
+	gs.Over = true
 }
 
 // checkForDraw checks for draws
