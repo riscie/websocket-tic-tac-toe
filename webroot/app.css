@@ -1,32 +1,116 @@
+/* Main Site */
 body {
     padding-top: 50px;
 }
 
-.board {
-    margin-top: 5%;
-    margin-left: 15%;
-    margin-right: 15%;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
-.field {
-    float:left;
-    width: 30%;
-    padding-bottom: 30%; /* = width for a 1:1 aspect ratio */
-    margin:0.5%;
-    background-color: #222222;
-
-    display: table;
-    overflow: hidden;
+.main {
+    margin-top: 25px;
 }
 
-.inner {
-    display: table-cell;
-    vertical-align: middle;
+/* StatusMessage */
+#statusMessage{
+    text-align: center;
 }
 
-
-.field:hover {
-    background-color: lightgreen;
-    color: lightgray;
+/* Board -https://coderbyte.com/tutorial/create-a-tic-tac-toe-game-using-html-css-and-jquery-*/
+#board {
+    padding: 0px;
+    margin: 0 auto;
 }
 
+.free-field {
+    color: white;
+}
+
+#board tr td {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #b3b3b3;
+    font-family: Helvetica, sans-serif;
+    font-size: 30px;
+    text-align: center;
+    background: white;
+}
+
+#board tr td:hover {
+    background: lightgreen;
+    cursor: pointer;
+}
+/* Jumbotron */
+.jumbotron{
+    text-align: center;
+    color: #334046;
+}
+
+/* Spinner -http://tobiasahlin.com/spinkit/-*/
+.sk-cube-grid {
+    width: 100px;
+    height: 100px;
+    margin: 100px auto;
+}
+
+.sk-cube-grid .sk-cube {
+    width: 33%;
+    height: 33%;
+    background-color: white;
+    float: left;
+    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+}
+.sk-cube-grid .sk-cube1 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube2 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube3 {
+    -webkit-animation-delay: 0.4s;
+    animation-delay: 0.4s; }
+.sk-cube-grid .sk-cube4 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube5 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+.sk-cube-grid .sk-cube6 {
+    -webkit-animation-delay: 0.3s;
+    animation-delay: 0.3s; }
+.sk-cube-grid .sk-cube7 {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s; }
+.sk-cube-grid .sk-cube8 {
+    -webkit-animation-delay: 0.1s;
+    animation-delay: 0.1s; }
+.sk-cube-grid .sk-cube9 {
+    -webkit-animation-delay: 0.2s;
+    animation-delay: 0.2s; }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    } 35% {
+          -webkit-transform: scale3D(0, 0, 1);
+          transform: scale3D(0, 0, 1);
+      }
+}
+
+@keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    } 35% {
+          -webkit-transform: scale3D(0, 0, 1);
+          transform: scale3D(0, 0, 1);
+      }
+}
