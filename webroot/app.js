@@ -1,5 +1,5 @@
 // creating the websocket connection
-var socket = new WebSocket("ws://localhost:8080/ws");
+var socket = new WebSocket("ws://nb2737:8080/ws");
 
 // when an update is received via ws connection, we update the model
 socket.onmessage = function(evt){
@@ -22,6 +22,8 @@ var tictactoe = new Vue({
             started: false,
             fields: [],
         },
+        //Special Move coding scheme
+        RESTART: 10,
     },
     computed: {
         row1: function() {
@@ -35,7 +37,7 @@ var tictactoe = new Vue({
         },
     },
     methods: {
-        chooseField: function(fieldNum){
+        makeMove: function(fieldNum){
             socket.send(fieldNum);
         },
     }

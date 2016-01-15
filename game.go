@@ -5,6 +5,11 @@ import (
 	"log"
 )
 
+// constants representing different game status messages
+const waitPaired = "Waiting to get paired"
+const gameBegins = "Game begins!"
+const draw = "Draw!"
+
 // gameState is the struct which represents the gamestate between two players
 type gameState struct {
 	//renaming json values here to confirm the standard (lowercase var names)
@@ -12,6 +17,7 @@ type gameState struct {
 	Fields        []field  `json:"fields"`
 	PlayerSymbols []string `json:"playerSymbols"`
 	Started       bool     `json:"started"`
+	Over          bool     `json:"over"`
 	//These are not exported to JSON
 	numberOfPlayers int
 	playersTurn     int
@@ -27,12 +33,8 @@ type field struct {
 // newGameState is the constructor for the gameState struct and creates the initial gameState Struct (emtpy board)
 func newGameState() gameState {
 	gs := gameState{
-		StatusMessage: "Waiting to get paired",
-		Fields: []field{
-			field{}, field{}, field{}, // row1
-			field{}, field{}, field{}, // row2
-			field{}, field{}, field{}, // row3
-		},
+		StatusMessage: waitPaired,
+		Fields:        emptyFields(),
 		PlayerSymbols: []string{0: "X", 1: "O"},
 		Started:       false,
 		//These are not exported to JSON
@@ -42,36 +44,65 @@ func newGameState() gameState {
 	return gs
 }
 
+func emptyFields() []field {
+	return []field{
+		field{}, field{}, field{}, // row1
+		field{}, field{}, field{}, // row2
+		field{}, field{}, field{}, // row3
+	}
+}
+
 // addPlayer informs the gamestate about the new player and alters the statusMessage
 func (gs *gameState) addPlayer() {
 	gs.numberOfPlayers++
 	switch gs.numberOfPlayers {
 	case 1:
-		gs.StatusMessage = "Waiting to get paired"
+		gs.StatusMessage = waitPaired
 	case 2:
-		gs.StatusMessage = "Game begins!"
+		gs.StatusMessage = gameBegins
 		gs.Started = true
 	}
 }
 
 // makeMove checks if it's the
-func (gs *gameState) makeMove(playerNum int, field int) {
-	if gs.isPlayersTurn(playerNum) {
-		if gs.isLegalMove(field) {
-			gs.Fields[field].Set = true
-			gs.Fields[field].Symbol = gs.PlayerSymbols[playerNum]
-			gs.switchPlayersTurn(playerNum)
-			gs.numberOfMoves++
-			gs.checkForDraw()
+func (gs *gameState) makeMove(playerNum int, moveNum int) {
+	if moveNum <= 9 {
+		if gs.isPlayersTurn(playerNum) {
+			if gs.isLegalMove(moveNum) {
+				gs.Fields[moveNum].Set = true
+				gs.Fields[moveNum].Symbol = gs.PlayerSymbols[playerNum]
+				gs.switchPlayersTurn(playerNum)
+				gs.numberOfMoves++
+				gs.checkForDraw()
+			}
 		}
+	} else {
+		gs.specialMove(moveNum)
 	}
+}
+
+func (gs *gameState) specialMove(moveNum int) {
+	switch moveNum {
+	//restart game
+	case 10:
+		gs.restartGame()
+	}
+}
+
+func (gs *gameState) restartGame() {
+	gs.StatusMessage = gameBegins
+	gs.Fields = emptyFields()
+	gs.Over = false
+	gs.numberOfMoves = 0
+
 }
 
 // checkForDraw checks for draws
 func (gs *gameState) checkForDraw() {
 	//Todo: Implement
 	if gs.numberOfMoves == 9 {
-		gs.StatusMessage = "Draw!"
+		gs.StatusMessage = draw
+		gs.Over = true
 	}
 }
 

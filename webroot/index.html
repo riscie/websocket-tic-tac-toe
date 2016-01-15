@@ -30,7 +30,10 @@
 
 <div class="container main">
     <div id="tictactoe">
-        <div class="well well-lg" v-if="gameState.started" id="statusMessage"><h4>{{gameState.statusMessage}}</h4></div>
+        <div class="well well-lg" v-if="gameState.started" id="statusMessage">
+            <h4>{{gameState.statusMessage}}</h4>
+            <button v-if="gameState.over" @click="makeMove(RESTART)" type="button" class="btn btn-success">Restart</button>
+        </div>
 
         <div class="jumbotron" v-if="!gameState.started">
             <h1>{{gameState.statusMessage}}</h1>
@@ -50,20 +53,20 @@
         <div class="jumbotron" v-if="gameState.started">
             <table id='board'>
                 <tr>
-                    <td v-for="(index, field) in row1" @click="chooseField(index+0)">
+                    <td v-for="(index, field) in row1" @click="makeMove(index+0)">
                         <span v-if="field.set">{{field.symbol}}</span>
                         <span v-if="!field.set" class="free-field"></span>
                     </td>
                 </tr>
                 <tr>
-                    <td v-for="(index, field) in row2" @click="chooseField(index+3)">
+                    <td v-for="(index, field) in row2" @click="makeMove(index+3)">
                         <span v-if="field.set">{{field.symbol}}</span>
                         <span v-if="!field.set" class="free-field"></span>
 
                     </td>
                 </tr>
                 <tr>
-                    <td v-for="(index, field) in row3" @click="chooseField(index+6)">
+                    <td v-for="(index, field) in row3" @click="makeMove(index+6)">
                         <span v-if="field.set">{{field.symbol}}</span>
                         <span v-if="!field.set" class="free-field"></span>
 
