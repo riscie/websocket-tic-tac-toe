@@ -2,6 +2,7 @@ var tictactoe = new Vue({
     el: '#tictactoe',
     data: {
         gameState: {
+            started: false,
         }
     },
     methods: {

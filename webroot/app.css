@@ -1,24 +1,32 @@
-html {
-    font-family: "Roboto",sans-serif;
-    font-weight: normal;
-}
-
-.square{
-    width:100px;
-    height:100px;
-}
-
-.v{
-    border-left:1px solid #000;
-    border-right:1px solid #000;
-}
-
-.h{
-    border-top:1px solid #000;
-    border-bottom:1px solid #000;
+body {
+    padding-top: 50px;
 }
 
 .board {
-    width: 300px;
-    margin: auto;
+    margin-top: 5%;
+    margin-left: 15%;
+    margin-right: 15%;
 }
+
+.field {
+    float:left;
+    width: 30%;
+    padding-bottom: 30%; /* = width for a 1:1 aspect ratio */
+    margin:0.5%;
+    background-color: #222222;
+
+    display: table;
+    overflow: hidden;
+}
+
+.inner {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+
+.field:hover {
+    background-color: lightgreen;
+    color: lightgray;
+}
+
