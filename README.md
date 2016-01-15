@@ -1,6 +1,6 @@
 # websocket tic-tac-toe 
 #### golang backend with gorilla websockets, vuejs frontend
-![game sample](http://langhard.com/github/tic-tac-toe1.gif "game sample")
+![game sample](http://langhard.com/github/tic-tac-toe1.gif "game sample")\
 *(yeah, playing myself in this gif...)*
 
 ### get and run
