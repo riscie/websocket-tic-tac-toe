@@ -15,4 +15,7 @@
 * start with gin:  `gin -a 8080 r .\server.go`
 
 
-# ...this project is 'work in progress'
+### ...this project is 'work in progress'
+### Todos:
+* finish implementing the game logic
+* writing tests
