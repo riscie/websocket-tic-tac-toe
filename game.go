@@ -77,8 +77,9 @@ func (gs *gameState) makeMove(playerNum int, moveNum int) {
 				gs.numberOfMoves++
 				if won, symbol := gs.checkForWin(); won {
 					gs.setWinner(symbol)
+				} else {
+					gs.checkForDraw()
 				}
-				gs.checkForDraw()
 			}
 		}
 	} else {
