@@ -165,7 +165,6 @@ func (gs *gameState) setWinner(symbol string) {
 
 // checkForDraw checks for draws
 func (gs *gameState) checkForDraw() {
-	//Todo: Implement
 	if gs.numberOfMoves == 9 {
 		gs.StatusMessage = draw
 		gs.Over = true
