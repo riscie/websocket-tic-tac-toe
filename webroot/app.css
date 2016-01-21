@@ -35,17 +35,47 @@ table {
 #board tr td {
     width: 80px;
     height: 80px;
-    border: 1px solid #b3b3b3;
+    border: 2px solid #b3b3b3;
     font-family: Helvetica, sans-serif;
     font-size: 30px;
     text-align: center;
     background: white;
+}
+    /* top row */
+#board tr td.top {
+    border-top: none;
+}
+#board tr td.top:nth-child(1) {
+    border-left: none;
+}
+#board tr td.top:nth-child(3) {
+    border-right: none;
+}
+/* middle row */
+#board tr td.middle:nth-child(1) {
+    border-left: none;
+}
+#board tr td.middle:nth-child(3) {
+    border-right: none;
+}
+
+/* bottom row */
+#board tr td.bottom {
+    border-bottom: none;
+}
+#board tr td.bottom:nth-child(1) {
+    border-left: none;
+}
+#board tr td.bottom:nth-child(3) {
+    border-right: none;
 }
 
 #board tr td:hover {
     background: lightgreen;
     cursor: pointer;
 }
+
+
 /* Jumbotron */
 .jumbotron{
     text-align: center;

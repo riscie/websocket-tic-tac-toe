@@ -53,20 +53,20 @@
         <div class="jumbotron" v-if="gameState.started">
             <table id='board'>
                 <tr>
-                    <td v-for="(index, field) in row1" @click="makeMove(index+0)">
+                    <td v-for="(index, field) in row1" @click="makeMove(index+0)" class="top">
                         <span v-if="field.set">{{field.symbol}}</span>
                         <span v-if="!field.set" class="free-field"></span>
                     </td>
                 </tr>
                 <tr>
-                    <td v-for="(index, field) in row2" @click="makeMove(index+3)">
+                    <td v-for="(index, field) in row2" @click="makeMove(index+3)" class="middle">
                         <span v-if="field.set">{{field.symbol}}</span>
                         <span v-if="!field.set" class="free-field"></span>
 
                     </td>
                 </tr>
                 <tr>
-                    <td v-for="(index, field) in row3" @click="makeMove(index+6)">
+                    <td v-for="(index, field) in row3" @click="makeMove(index+6)" class="bottom">
                         <span v-if="field.set">{{field.symbol}}</span>
                         <span v-if="!field.set" class="free-field"></span>
 
