@@ -3,6 +3,7 @@ package main
 import (
 	"sync"
 	"time"
+	"log"
 )
 
 // timeoutBeforeReBroadcast sets the time in seconds after where we rebroadcast the gameState
@@ -77,5 +78,6 @@ func (h *connectionPair) removeConnection(conn *connection) {
 		delete(h.connections, conn)
 		close(conn.doBroadcast)
 	}
+	log.Println("Player disconnected")
 	h.gs.resetGame()
 }
