@@ -12,6 +12,13 @@ socket.onmessage = function(evt){
 // vuejs debug mode
 Vue.config.debug = true; //TODO: Remove in production
 
+
+// transistions
+Vue.transition('board', {
+    enterClass: 'bounceInDown',
+    leaveClass: 'bounceOutDown'
+});
+
 // creating the vue instance here
 // trying to have all my logic in the backend, only updating the view
 // on model changes and passing moves back to the backend

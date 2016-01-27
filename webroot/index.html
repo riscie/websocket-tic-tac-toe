@@ -6,6 +6,7 @@
     <title>websocket tic-tac-toe</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw==" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.css">
     <link rel="stylesheet" type="text/css" href="/app.css">
 </head>
 <body>
@@ -35,7 +36,7 @@
             <button v-if="gameState.over" @click="makeMove(RESTART)" type="button" class="btn btn-success">Restart</button>
         </div>
 
-        <div class="jumbotron" v-if="!gameState.started">
+        <div class="jumbotron animated" v-if="!gameState.started">
             <h1>{{gameState.statusMessage}}</h1>
             <div class="sk-cube-grid"> <!-- spinner: Copyright / Credit (MIT License): https://github.com/tobiasahlin/SpinKit/-->
                 <div class="sk-cube sk-cube1"></div>
@@ -50,7 +51,7 @@
             </div>
         </div>
 
-        <div class="jumbotron" v-if="gameState.started">
+        <div class="jumbotron animated" v-if="gameState.started" transition="board">
             <table id='board'>
                 <tr>
                     <td v-for="(index, field) in row1" @click="makeMove(index+0)" class="top">
