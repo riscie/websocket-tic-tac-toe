@@ -1,9 +1,9 @@
 package main
 
 import (
+	"log"
 	"sync"
 	"time"
-	"log"
 )
 
 // timeoutBeforeReBroadcast sets the time in seconds after where we rebroadcast the gameState

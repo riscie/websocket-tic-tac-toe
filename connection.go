@@ -67,7 +67,7 @@ func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 	}
 	// find all connections with zero players and seat the player in the connectionPair
 	for _, h := range connections {
-		if len(h.connections)  == 0 {
+		if len(h.connections) == 0 {
 			log.Printf("Player seated in existing connectionPair")
 			return h, len(h.connections)
 		}
@@ -102,6 +102,7 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		c.cp.gs = newGameState()
 		//there is already one player connected when we re-pair
 		c.cp.gs.numberOfPlayers = 1
+		log.Println("gamestate resetted")
 	}
 
 	//inform the gameState about the new player

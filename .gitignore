@@ -80,3 +80,6 @@ fabric.properties
 
 # Project specific files
 /project_info
+
+# Environment specific variables
+.env
