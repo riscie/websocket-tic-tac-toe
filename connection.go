@@ -65,19 +65,13 @@ func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 			return h, len(h.connections)
 		}
 	}
-	// find all connections with zero players and seat the player in the connectionPair
-	for _, h := range connections {
-		if len(h.connections) == 0 {
-			//TODO: needs debugging. should remove emtpy connections from the stack
-			//log.Printf("Player seated in existing connectionPair")
-			//return h, len(h.connections)
 
-		}
-	}
+	//TODO: I need to remove orphaned connectionPairs from the stack
+
 	// if no emtpy slow was found at all, we create a new connectionPair
 	h := newConnectionPair()
 	connections = append(connections, h)
-	log.Printf("Player seated in new connectionPair")
+	log.Printf("Player seated in new connectionPair no. %v",len(connections))
 	return connections[sizeBefore], 0
 }
 
