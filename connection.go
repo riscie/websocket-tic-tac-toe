@@ -65,9 +65,9 @@ func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 			return h, len(h.connections)
 		}
 	}
-	// find all connections with zero or one player and seat the player in the connectionPair
+	// find all connections with zero players and seat the player in the connectionPair
 	for _, h := range connections {
-		if len(h.connections) <= 1 {
+		if len(h.connections)  == 0 {
 			log.Printf("Player seated in existing connectionPair")
 			return h, len(h.connections)
 		}
@@ -94,7 +94,6 @@ func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	cp, pn := getConnectionPairWithEmptySlot()
 	c := &connection{doBroadcast: make(chan bool), cp: cp, playerNum: pn}
 	c.cp.addConnection(c)
-	defer c.cp.removeConnection(c)
 
 	//If the connectionPair existed before but one player was disconnected
 	//we can now reinitialize the gameState after the remaining player has
