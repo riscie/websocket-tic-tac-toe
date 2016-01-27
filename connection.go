@@ -58,11 +58,19 @@ func (c *connection) writer(wg *sync.WaitGroup, wsConn *websocket.Conn) {
 // if there is none a new connectionPair is created and the player is added to that pair
 func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 	sizeBefore := len(connections)
+	// find connections with 1 player first and pair if possible
+	for _, h := range connections {
+		if len(h.connections) == 1 {
+			return h, len(h.connections)
+		}
+	}
+	// find all connections with zero or one player and seat the player in the connectionPair
 	for _, h := range connections {
 		if len(h.connections) <= 1 {
 			return h, len(h.connections)
 		}
 	}
+	// if no emtpy slow was found at all, we create a new connectionPair
 	h := newConnectionPair()
 	connections = append(connections, h)
 	return connections[sizeBefore], 0
