@@ -71,7 +71,7 @@ func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 	// if no emtpy slow was found at all, we create a new connectionPair
 	h := newConnectionPair()
 	connections = append(connections, h)
-	log.Printf("Player seated in new connectionPair no. %v",len(connections))
+	log.Printf("Player seated in new connectionPair no. %v", len(connections))
 	return connections[sizeBefore], 0
 }
 
