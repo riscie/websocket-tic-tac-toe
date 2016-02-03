@@ -8,13 +8,6 @@ import (
 	"sync"
 )
 
-// upgrader is needed to upgrade the HTTP Connection to a websocket Connection
-var upgrader = &websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin:     func(r *http.Request) bool { return true }, //TODO: Remove in production. Needed for gin proxy
-}
-
 // connections stores all the hubs
 var connections []*connectionPair
 
@@ -79,6 +72,14 @@ func getConnectionPairWithEmptySlot() (*connectionPair, int) {
 // connections are upgraded to websocket connections and the player is added
 // to a connection pair
 func (wsh wsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+	// upgrader is needed to upgrade the HTTP Connection to a websocket Connection
+	upgrader := &websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin:     func(r *http.Request) bool { return true }, //TODO: Remove in production. Needed for gin proxy
+	}
+
 	//Upgrading HTTP Connection to websocket connection
 	wsConn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {

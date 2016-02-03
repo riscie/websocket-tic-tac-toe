@@ -48,9 +48,9 @@ func newGameState() gameState {
 
 func emptyFields() []field {
 	return []field{
-		field{}, field{}, field{}, // row1
-		field{}, field{}, field{}, // row2
-		field{}, field{}, field{}, // row3
+		{}, {}, {}, // row1
+		{}, {}, {}, // row2
+		{}, {}, {}, // row3
 	}
 }
 
