@@ -83,3 +83,5 @@ fabric.properties
 
 # Environment specific variables
 .env
+# The Linux binary on do
+websocket-tic-tac-toe
