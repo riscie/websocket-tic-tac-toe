@@ -1,4 +1,5 @@
 # websocket tic-tac-toe
+[![Go Report Card](http://goreportcard.com/badge/riscie/websocket-tic-tac-toe)](http://goreportcard.com/report/riscie/websocket-tic-tac-toe)
 #### multiplayer tic-tac-toe using golang with gorilla websockets as backend and vuejs as frontend
 ![game sample](http://langhard.com/github/tic-tac-toe2.gif "game sample")
 
