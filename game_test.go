@@ -9,6 +9,7 @@ func TestCheckForWin(t *testing.T) {
 
 	var winPatterns []gameState
 
+	// Checking winning patterns
 	gs := newGameState()
 	x := field{Set: true, Symbol: "X"}
 
@@ -38,12 +39,34 @@ func TestCheckForWin(t *testing.T) {
 	gs.Fields = []field{{}, {}, x, {}, x, {}, x, {}, {}}
 	winPatterns = append(winPatterns, gs)
 
-	fmt.Printf("Testing %v winning patterns: ", len(winPatterns))
+	// Checking non-win patterns
+	var nonWinPatterns []gameState
+
+	// Different non-winning patterns
+	gs.Fields = []field{x, {}, x, {}, {}, {}, {}, {}, x}
+	nonWinPatterns = append(nonWinPatterns, gs)
+
+	gs.Fields = []field{{}, {}, {}, x, x, {}, {}, {}, x}
+	nonWinPatterns = append(nonWinPatterns, gs)
+
+	gs.Fields = []field{x, {}, {}, {}, {}, {}, {}, x, x}
+	nonWinPatterns = append(nonWinPatterns, gs)
+
+	gs.Fields = []field{x, {}, {}, x, {}, {}, {}, {}, x}
+	nonWinPatterns = append(nonWinPatterns, gs)
+
+	fmt.Printf("Testing %v winning patterns\n", len(winPatterns))
 
 	for _, p := range winPatterns {
 		if w, _ := p.checkForWin(); !w {
-			t.Error("no Player detected as winning")
+			t.Error("No Player detected as winning")
 		}
 	}
+	fmt.Printf("Testing %v non-winning patterns\n", len(nonWinPatterns))
 
+	for _, p := range nonWinPatterns {
+		if w, _ := p.checkForWin(); w {
+			t.Error("Detected win which is non-win")
+		}
+	}
 }
