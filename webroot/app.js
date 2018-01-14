@@ -1,6 +1,11 @@
-// creating the websocket connection
-var socket = new WebSocket("ws://tic-tac-toe.langhard.com/ws");
+// creating the websocket connection. Test for dev environment
+var socket;
 
+if (window.location.host === "127.0.0.1:8080") {
+  socket = new WebSocket("ws://127.0.0.1:8080/ws");
+} else {
+  socket = new WebSocket("ws://tic-tac-toe.langhard.com/ws");
+}
 // when an update is received via ws connection, we update the model
 socket.onmessage = function(evt){
     var newData = JSON.parse(evt.data);

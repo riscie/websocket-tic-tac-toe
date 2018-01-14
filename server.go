@@ -2,20 +2,25 @@ package main
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	//reading environment specific settings .env file
+	host, port := "", ""
+	//reading environment specific settings .env file. If missing; assume dev env
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Print("Error loading .env file")
+		host = "127.0.0.1"
+		port = "8080"
+	} else {
+		host = os.Getenv("HOST")
+		port = os.Getenv("PORT")
 	}
-	host := os.Getenv("HOST")
-	port := os.Getenv("PORT")
 
 	//preparing mux and server
 	conn := fmt.Sprint(host, ":", port)
